@@ -15,7 +15,7 @@ class Header extends Component {
 
   getUserName = async () => {
     const user = await getUser();
-    this.setState({ userName: user, loading: false });
+    this.setState({ userName: user.name, loading: false });
   };
 
   render() {
@@ -23,28 +23,13 @@ class Header extends Component {
     return (
       <header data-testid="header-component">
         <nav>
-          <Link
-            to="/search"
-            data-testid="link-to-search"
-          >
-            Pesquisa |
-          </Link>
-          <Link
-            to="/favorites"
-            data-testid="link-to-favorites"
-          >
-            Favoritas |
-          </Link>
-          <Link
-            to="/profile"
-            data-testid="link-to-profile"
-          >
-            Perfil |
-          </Link>
+          <Link data-testid="link-to-search" to="/search">Search |</Link>
+          <Link data-testid="link-to-favorites" to="/favorites">Favorites |</Link>
+          <Link data-testid="link-to-profile" to="/profile">Profile |</Link>
         </nav>
         { loading
           ? <Loading />
-          : <h3 data-testid="header-user-name">{userName.name}</h3>}
+          : <h3 data-testid="header-user-name">{userName}</h3>}
       </header>
     );
   }
