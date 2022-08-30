@@ -15,6 +15,12 @@ class Search extends Component {
               placeholder="Nome do artista"
               data-testid="search-artist-input"
             />
+            <button
+              type="button"
+              data-testid="search-artist-button"
+            >
+              Pesquisar
+            </button>
           </form>
         </div>
       </div>

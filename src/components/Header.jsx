@@ -33,7 +33,7 @@ class Header extends Component {
             to="/favorites"
             data-testid="link-to-favorites"
           >
-            _Favoritas |
+            Favoritas |
           </Link>
           <Link
             to="/profile"
