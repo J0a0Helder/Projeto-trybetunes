@@ -7,14 +7,14 @@ class Login extends Component {
   state = {
     loading: false,
     redirect: false,
-    loginName: '',
+    userName: '',
     isloginButtonDisabled: true,
   };
 
   validation = () => {
-    const { loginName } = this.state;
+    const { userName } = this.state;
     const minCaracteres = 3;
-    if (loginName.length >= minCaracteres) {
+    if (userName.length >= minCaracteres) {
       this.setState({ isloginButtonDisabled: false });
     } else {
       this.setState({ isloginButtonDisabled: true });
@@ -30,7 +30,7 @@ class Login extends Component {
   };
 
   render() {
-    const { loginName, isloginButtonDisabled, loading, redirect } = this.state;
+    const { userName, isloginButtonDisabled, loading, redirect } = this.state;
 
     return (
       redirect ? <Redirect to="/search" />
@@ -45,10 +45,10 @@ class Login extends Component {
                     <input
                       type="text"
                       placeholder="nome"
-                      name="loginName"
+                      name="userName"
                       id="login"
                       data-testid="login-name-input"
-                      value={ loginName }
+                      value={ userName }
                       onChange={ this.handleChange }
                     />
                   </label>
@@ -60,7 +60,7 @@ class Login extends Component {
                     disabled={ isloginButtonDisabled }
                     onClick={ async () => {
                       this.setState({ loading: true });
-                      await createUser({ name: loginName });
+                      await createUser({ name: userName });
                       this.setState({ redirect: true });
                     } }
                   >
