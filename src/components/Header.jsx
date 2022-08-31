@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { getUser } from '../services/userAPI';
 import Loading from './Loading';
+import '../style/header.css';
 
 class Header extends Component {
   state = {
@@ -23,9 +24,36 @@ class Header extends Component {
     return (
       <header data-testid="header-component">
         <nav>
-          <Link data-testid="link-to-search" to="/search">Search |</Link>
-          <Link data-testid="link-to-favorites" to="/favorites">Favorites |</Link>
-          <Link data-testid="link-to-profile" to="/profile">Profile |</Link>
+          <a className="logo" href="/search">TrybeTunes</a>
+          <ul className="nav-list">
+            <li>
+              <Link
+                data-testid="link-to-search"
+                to="/search"
+                className="links"
+              >
+                Search
+              </Link>
+            </li>
+            <li>
+              <Link
+                data-testid="link-to-favorites"
+                to="/favorites"
+                className="links"
+              >
+                Favorites
+              </Link>
+            </li>
+            <li>
+              <Link
+                data-testid="link-to-profile"
+                to="/profile"
+                className="links"
+              >
+                Profile
+              </Link>
+            </li>
+          </ul>
         </nav>
         { loading
           ? <Loading />

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { createUser } from '../services/userAPI';
 import Loading from '../components/Loading';
+import logo from '../images/logo.jpg';
+import '../style/login.css';
 
 class Login extends Component {
   state = {
@@ -33,44 +35,49 @@ class Login extends Component {
     const { userName, isloginButtonDisabled, loading, redirect } = this.state;
 
     return (
-      redirect ? <Redirect to="/search" />
-        : (
-          <div data-testid="page-login">
-            { loading ? <Loading /> : (
-              <form>
-                <span>Bem vindo!</span>
-                <div>
-                  <label htmlFor="login">
-                    insira seu nome para o Login:
+      <div className="container">
+        { redirect ? <Redirect to="/search" />
+          : (
+            <div data-testid="page-login" className="container-login">
+              { loading ? <Loading /> : (
+                <form className="login-form">
+                  <span className="login-form-title">Bem vindo!</span>
+                  <span className="login-form-title">
+                    <img src={ logo } alt="logo-login" />
+                  </span>
+                  <div className="name-input">
                     <input
                       type="text"
-                      placeholder="nome"
+                      placeholder="Insira seu nome"
                       name="userName"
                       id="login"
                       data-testid="login-name-input"
                       value={ userName }
                       onChange={ this.handleChange }
+                      className="login-input"
                     />
-                  </label>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    data-testid="login-submit-button"
-                    disabled={ isloginButtonDisabled }
-                    onClick={ async () => {
-                      this.setState({ loading: true });
-                      await createUser({ name: userName });
-                      this.setState({ redirect: true });
-                    } }
-                  >
-                    Entrar
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        )
+                    <span className="focus-input" data-placeholder="Nome" />
+                  </div>
+                  <div className="login-btn-container">
+                    <button
+                      type="button"
+                      data-testid="login-submit-button"
+                      disabled={ isloginButtonDisabled }
+                      onClick={ async () => {
+                        this.setState({ loading: true });
+                        await createUser({ name: userName });
+                        this.setState({ redirect: true });
+                      } }
+                      className="login-btn"
+                    >
+                      Entrar
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+      </div>
     );
   }
 }
