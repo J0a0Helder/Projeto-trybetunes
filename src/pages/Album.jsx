@@ -25,20 +25,17 @@ class Album extends Component {
       <div data-testid="page-album">
         <Header />
         {
-          albuns.map(({ trackId,
-            trackName,
-            previewUrl,
-            artistName,
-            collectionName,
-          }, i) => (i === 0 ? (
-            <div key={ trackId }>
-              <p data-testid="artist-name">{artistName}</p>
-              <p data-testid="album-name">{collectionName}</p>
+          albuns.map((element, index) => (index === 0 ? (
+            <div key={ index }>
+              <p data-testid="artist-name">{element.artistName}</p>
+              <p data-testid="album-name">{element.collectionName}</p>
             </div>
           ) : (<MusicCard
-            key={ trackId }
-            trackName={ trackName }
-            previewUrl={ previewUrl }
+            key={ index }
+            trackName={ element.trackName }
+            previewUrl={ element.previewUrl }
+            trackId={ element.trackId }
+            obj={ element }
           />)))
         }
       </div>

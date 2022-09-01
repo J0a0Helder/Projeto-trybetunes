@@ -40,7 +40,14 @@ class Login extends Component {
           : (
             <div data-testid="page-login" className="container-login">
               { loading ? <Loading /> : (
-                <form className="login-form">
+                <form
+                  className="login-form"
+                  onSubmit={ async () => {
+                    this.setState({ loading: true });
+                    await createUser({ name: userName });
+                    this.setState({ redirect: true });
+                  } }
+                >
                   <span className="login-form-title">Bem vindo!</span>
                   <span className="login-form-title">
                     <img src={ logo } alt="logo-login" />
@@ -60,14 +67,9 @@ class Login extends Component {
                   </div>
                   <div className="login-btn-container">
                     <button
-                      type="button"
+                      type="submit"
                       data-testid="login-submit-button"
                       disabled={ isloginButtonDisabled }
-                      onClick={ async () => {
-                        this.setState({ loading: true });
-                        await createUser({ name: userName });
-                        this.setState({ redirect: true });
-                      } }
                       className="login-btn"
                     >
                       Entrar

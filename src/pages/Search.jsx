@@ -70,7 +70,7 @@ class Search extends Component {
     } = this.state;
 
     const form = (
-      <form>
+      <form onSubmit={ () => this.search(searchRequest) }>
         <input
           type="text"
           name="searchRequest"
@@ -81,10 +81,9 @@ class Search extends Component {
           onChange={ this.handleChange }
         />
         <button
-          type="button"
+          type="submit"
           data-testid="search-artist-button"
           disabled={ isloginButtonDisabled }
-          onClick={ () => this.search(searchRequest) }
         >
           Pesquisar
         </button>
@@ -96,14 +95,11 @@ class Search extends Component {
         <Header />
         <div>
           { !loading ? form : null }
-
           { loading && <Loading /> }
-
           { loadingComplet
             && !loading
             && results.length > 0
             && <span>{`Resultado de álbuns de: ${artist}`}</span>}
-
           { loadingComplet && this.artistResults(results) }
         </div>
       </div>
