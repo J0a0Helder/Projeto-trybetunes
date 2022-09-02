@@ -27,8 +27,8 @@ class Album extends Component {
         {
           albuns.map((element, index) => (index === 0 ? (
             <div key={ index }>
-              <p data-testid="artist-name">{element.artistName}</p>
-              <p data-testid="album-name">{element.collectionName}</p>
+              <h3 data-testid="artist-name">{element.artistName}</h3>
+              <h4 data-testid="album-name">{element.collectionName}</h4>
             </div>
           ) : (<MusicCard
             key={ index }
