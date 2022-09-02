@@ -1,22 +1,48 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
+import Favorites from '../pages/Favorites';
 
 class MusicCard extends Component {
   state = {
     loading: false,
+    favorited: false,
+    songsList: [],
   };
 
   componentDidMount() {
-    this.checkBoxClick();
+    this.isFavorited();
+    this.FavoriteSongsList();
   }
 
-  checkBoxClick = async () => {
-    const { obj } = this.props;
+  FavoriteSongsList = async () => {
     this.setState({ loading: true });
-    await addSong(obj);
-    this.setState({ loading: false });
+    const songsList = await getFavoriteSongs();
+    this.setState({ songsList, loading: false });
+  };
+
+  isFavorited = async () => {
+    const { trackId } = this.props;
+    const favoriteSongs = await getFavoriteSongs();
+    const favorited = favoriteSongs
+      ? favoriteSongs.some((track) => track.trackId === trackId)
+      : false;
+    this.setState({ favorited });
+    return favorited;
+  };
+
+  onFavoriteClick = async (favorited) => {
+    const { trackInfo } = this.props;
+    const toggle = favorited ? removeSong : addSong;
+    this.setState({ loading: true });
+    await toggle(trackInfo);
+    this.setState({ loading: false, favorited: !favorited });
+  };
+
+  handleChange = async (obj) => {
+    this.onFavoriteClick(obj);
+    await this.FavoriteSongsList();
   };
 
   render() {
@@ -26,10 +52,10 @@ class MusicCard extends Component {
       trackId,
     } = this.props;
 
-    const { loading } = this.state;
+    const { loading, favorited, songsList } = this.state;
     return (
       <div>
-
+        <Favorites songsList={ songsList } />
         { loading && <Loading /> }
 
         <label htmlFor="input_favorites">
@@ -38,7 +64,8 @@ class MusicCard extends Component {
             type="checkbox"
             id="input_favorites"
             data-testid={ `checkbox-music-${trackId}` }
-            onChange={ () => this.checkBoxClick() }
+            checked={ favorited }
+            onChange={ () => this.handleChange(favorited) }
           />
           <h4>{trackName}</h4>
           <audio data-testid="audio-component" src={ previewUrl } controls>
@@ -57,7 +84,7 @@ MusicCard.propTypes = {
   previewUrl: PropTypes.string.isRequired,
   trackName: PropTypes.string.isRequired,
   trackId: PropTypes.number.isRequired,
-  obj: PropTypes.shape.isRequired,
+  trackInfo: PropTypes.string.isRequired,
 };
 
 export default MusicCard;
