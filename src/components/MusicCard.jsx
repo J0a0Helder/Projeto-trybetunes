@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
 import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
-import Favorites from '../pages/Favorites';
 
 class MusicCard extends Component {
   state = {
@@ -33,15 +32,20 @@ class MusicCard extends Component {
   };
 
   onFavoriteClick = async (favorited) => {
-    const { trackInfo } = this.props;
-    const toggle = favorited ? removeSong : addSong;
-    this.setState({ loading: true });
-    await toggle(trackInfo);
-    this.setState({ loading: false, favorited: !favorited });
+    const { obj } = this.props;
+    if (favorited) {
+      this.setState({ loading: true });
+      await removeSong(obj);
+      this.setState({ loading: false, favorited: false });
+    } else {
+      this.setState({ loading: true });
+      await addSong(obj);
+      this.setState({ loading: false, favorited: true });
+    }
   };
 
-  handleChange = async (obj) => {
-    this.onFavoriteClick(obj);
+  handleChange = async (favorited) => {
+    this.onFavoriteClick(favorited);
     await this.FavoriteSongsList();
   };
 
@@ -55,7 +59,6 @@ class MusicCard extends Component {
     const { loading, favorited, songsList } = this.state;
     return (
       <div>
-        <Favorites songsList={ songsList } />
         { loading && <Loading /> }
 
         <label htmlFor="input_favorites">
@@ -75,6 +78,7 @@ class MusicCard extends Component {
             <code>audio</code>
           </audio>
         </label>
+        <p>{ `atualmente você possui ${songsList.length} músicas favoritas!` }</p>
       </div>
     );
   }
@@ -84,7 +88,7 @@ MusicCard.propTypes = {
   previewUrl: PropTypes.string.isRequired,
   trackName: PropTypes.string.isRequired,
   trackId: PropTypes.number.isRequired,
-  trackInfo: PropTypes.string.isRequired,
+  obj: PropTypes.shape.isRequired,
 };
 
 export default MusicCard;
